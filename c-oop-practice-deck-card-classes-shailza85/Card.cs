@@ -2,64 +2,78 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace c_oop_practice_deck_card_classes_shailza85
+namespace CSharpOOP
 {
-    public class Card
+    class Card
     {
-
         /*
-        *  Create a “Card” class that has the following properties:
-          Brand (Bicycle, Bee, etc)
-          Suit (Diamonds, Hearts, Spades, Clubs) 
-          Number (Ace, 2, 3, 4, 5, 6, 7, 8, 9, 10, Jack, Queen, King, Joker)
-          Joker must have a null suit, all others must have a suit
-          Folded Corner (true / false)
+        Brand (Bicycle, Bee, etc)
+        Suit (Diamonds, Hearts, Spades, Clubs) 
+        Number (Ace, 2, 3, 4, 5, 6, 7, 8, 9, 10, Jack, Queen, King, Joker)
+        Joker must have a null suit, all others must have a suit
+        Folded Corner (true / false)
+        */
 
-   * */      
+
         public string Brand { get; set; }
-        public Suit Suit { get; set; }
-        //public Number Number { get; set; }
-        public string Number { get; set; }
-        public bool FoldedCorner { get; set; } 
-        
-        public Card()
+
+        public enum SuitValue
         {
-            Brand = "Bicycle";
-            Suit = new Suit();
-            Number = "2";
-            FoldedCorner = true;
-
+            Spades,
+            Clubs,
+            Hearts,
+            Diamonds
         }
-
-        public Card(Suit suit,string number)
+        // Question mark allows a number value (int, short, long, byte, enums, etc) to be nulled. By default they cannot.
+        public SuitValue? Suit { get; set; }
+        public enum NumberValue
         {
-            Suit = suit;
-            this.Number = number;
+            Ace,
+            Two,
+            Three,
+            Four,
+            Five,
+            Six,
+            Seven,
+            Eight,
+            Nine,
+            Ten,
+            Jack,
+            Queen,
+            King,
+            Joker
         }
+        private NumberValue _number;
+        public NumberValue Number
+        {
+            get
+            {
+                return _number;
+            }
+            set
+            {
+                // If it's going to be a joker and still has a suit:
+                if (value == NumberValue.Joker && Suit != null)
+                {
+                    // Allow the set to go through, but force suit to be null.
+                    _number = value;
+                    Suit = null;
+                }
+                // If it's going to be something other than joker and does not have a suit:
+                else if (value != NumberValue.Joker && Suit == null)
+                {
+                    // Allow the set to go through, but force the suit to be spades (or any other suit really, just has to have one).
+                    _number = value;
+                    Suit = SuitValue.Spades;
+                }
+                // If the suit is set, and the value is not joker.
+                else
+                {
+                    _number = value;
+                }
+            }
+        }
+        public bool FolderCorner { get; set; }
 
-
-    }
-    public enum Suit
-    {
-        Clubs,
-        Diamonds,
-        Spades,
-        Hearts
-    }
-    public enum Number
-    {
-        Two = 2,
-        Three,
-        Four,
-        Five,
-        Six,
-        Seven,
-        Eight,
-        Nine,
-        Ten,
-        Jack = 10,
-        Queen = 10,
-        King = 10,
-        Ace,
     }
 }
